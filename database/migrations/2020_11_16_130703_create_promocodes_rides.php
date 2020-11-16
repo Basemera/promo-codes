@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePromocodeRidesTable extends Migration
+class CreatePromocodesRides extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePromocodeRidesTable extends Migration
      */
     public function up()
     {
-        Schema::create('promocode_rides', function (Blueprint $table) {
+        Schema::create('promo_codes_rides', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('promocode_id')->nullable()->index()->unsigned();
             $table->foreign('promocode_id')->references('id')->on('promo_codes')->onDelete('cascade');
@@ -30,6 +30,6 @@ class CreatePromocodeRidesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promocode_rides');
+        Schema::dropIfExists('promo_codes_rides');
     }
 }

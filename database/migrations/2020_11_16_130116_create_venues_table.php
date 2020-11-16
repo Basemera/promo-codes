@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePromoCodesTable extends Migration
+class CreateVenuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreatePromoCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('promo_codes', function (Blueprint $table) {
+        Schema::create('venues', function (Blueprint $table) {
             $table->id();
-            $table->char('promocode', 100)->unique();
-            $table->bigInteger('no_rides')->nullable();
-            $table->timestamp('expiry_date')->nullable();
-            $table->boolean('status')->nullable();
+            $table->char('name')->nullable();
             $table->float('latitude', 10,8)->nullable();
             $table->float('longitude', 11,8)->nullable();
-            $table->float('acceptable_radius')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ class CreatePromoCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('promo_codes');
+        Schema::dropIfExists('venues');
     }
 }
