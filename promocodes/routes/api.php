@@ -20,5 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => []],function() {
     Route::post('promocodes/create', 'App\Http\Controllers\PromoCodes@createPromoCodes');
+    Route::post('promocodes/deactivate', 'App\Http\Controllers\PromoCodes@deactivatePromoCode');
+    Route::post('promocodes/activate', 'App\Http\Controllers\PromoCodes@deactivatePromoCode');
+
+
 }
 );

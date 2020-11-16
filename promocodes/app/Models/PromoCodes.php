@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class PromoCodes extends Model
 {
     use HasFactory;
-    public static $active = 1;
-    static $deactivated = 2;
+    const ACTIVE = 1;
+    const DEACTIVATED = 2;
     protected $fillable = [
         'promocode',
         'no_rides',
@@ -25,10 +25,20 @@ class PromoCodes extends Model
     public function checkIfCodeIsValid() {
         if ($this->expiry_date != null &&
             $this->expiry_date >= Carbon::now() &&
-            $this->status == self::$active) {
+            $this->status == self::ACTIVE) {
                 return true;
             } else {
                 return false;
             }
     }
+
+    public function checkIfCodeIsExpired() {
+        if ($this->expiry_date &&
+        $this->expiry_date >= Carbon::now()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
