@@ -46,7 +46,8 @@ class PromoCodes extends Controller
                         'expiry_date' => isset($input['expiry']) ? Carbon::parse($input['expiry']) : null,
                         'status' => isset($input['status']) ? $input['status'] : 1,
                         'venue_id' => $venue->id,
-                        'acceptable_radius' => isset($input['accepted_radius']) ? $input['accepted_radius'] : null,                    ]
+                        'acceptable_radius' => isset($input['accepted_radius']) ? $input['accepted_radius'] : null,
+                    ]
                 );
                 $promo->save();
 
@@ -129,6 +130,41 @@ class PromoCodes extends Controller
             $error['errors'] = $validated->messages();
             $response = $error;
             return response()->json($response, 400);
+        }
+    }
+
+    public function getPromoCodes(Request $request)
+    {
+        $input = $request->all();
+        if (isset($input['q']) && strtolower($input['q']) == 'active') {
+            $promos = $this->getActivePromoCodes(true);
+            $count = $promos->count();
+            $response = [
+                'count' => $count,
+                'codes' => $promos
+            ];
+            return response()->json($response, 200);
+        }
+
+        $promos = $this->getActivePromoCodes();
+        $count = $promos->count();
+        $response = [
+            'count' => $count,
+            'codes' => $promos
+        ];
+        return response()->json($response, 200);
+    }
+
+    protected function getActivePromoCodes($active = false)
+    {
+        if ($active == true) {
+            return ModelsPromoCodes::where([
+                ['status', 1],
+                ['expiry_date', '>=', Carbon::now()]
+            ])
+                ->get();
+        } else {
+            return ModelsPromoCodes::all();
         }
     }
 
