@@ -60,3 +60,5 @@ php artisan test
 | POST   | /api/promocodes/activate                              | Activates a promo code       | all users       |
 | POST    | /api/promocodes/valid                                 | Returns details of valid promo code|all users        |
 | GET    | /api/promocodes/promocodes                            | Returns all promocodes       | all user s   |
+| GET    | /api/promocodes/promocodes?q=active                   | Returns all active promocodes| all user s   |
+
