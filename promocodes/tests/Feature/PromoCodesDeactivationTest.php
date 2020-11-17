@@ -24,7 +24,11 @@ class PromoCodesDeactivationTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    /**
+     * Test error is returned when fields are missing in request body
+     *
+     * @return void
+     */
     public function testMissingFieldsInBodyForDeactivation()
     {
         $data = [];
@@ -45,7 +49,11 @@ class PromoCodesDeactivationTest extends TestCase
         ]);
     }
 
-
+    /**
+     * Test error is returned when inputs are of the wrong type
+     *
+     * @return void
+     */
     public function testWrongInputTypeForActivation()
     {
         $data = [
@@ -69,7 +77,11 @@ class PromoCodesDeactivationTest extends TestCase
         ]);
     }
 
-
+    /**
+     * Test successfully deactivate a promo code
+     *
+     * @return void
+     */
     public function testDeactivatePromoCode() {
         //create venue
         $venue = Venue::create([
@@ -106,6 +118,11 @@ class PromoCodesDeactivationTest extends TestCase
         ]);
     }
 
+    /**
+     * Test error is thrown if promo code to be deactivated is already deactivated
+     *
+     * @return void
+     */
     public function testDeactivateFailsWhenPromoCodeAlreadyDeactivated() {
         //create venue
         $venue = Venue::create([

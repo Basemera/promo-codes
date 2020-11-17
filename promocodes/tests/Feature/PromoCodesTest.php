@@ -22,7 +22,11 @@ class PromoCodesTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    /**
+     * Test error returned when fields are missing in request body
+     *
+     * @return void
+     */
     public function testErrorWhenWrongInputToCreatePromo()
     {
         $data = [];
@@ -50,6 +54,11 @@ class PromoCodesTest extends TestCase
             ]);
     }
 
+    /**
+     * Test error is returned when wrong input types are passed in request
+     *
+     * @return void
+     */
     public function testErrorWhenWrongInputTypes()
     {
         $data = [
@@ -78,6 +87,11 @@ class PromoCodesTest extends TestCase
             ]);
     }
 
+    /**
+     * Test successfully generate a promo code
+     *
+     * @return void
+     */
     public function testCreatePromoCode()
     {
         $data = [
@@ -104,6 +118,11 @@ class PromoCodesTest extends TestCase
         ]);
     }
 
+    /**
+     * Test error is returned if date is in incorrect format
+     *
+     * @return void
+     */
     public function testFailureIfDateInIncorrectFormat() {
         $data = [
             "latitude" => "0.312379",
