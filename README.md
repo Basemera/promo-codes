@@ -51,7 +51,7 @@ Run tests.
 php artisan test
 ```
 
-#Endpoints
+# Endpoints
 
 | Method | Endpoint                                              | Description                  | Access          |
 |--------|-------------------------------------------------------|------------------------------|-----------------|
