@@ -10,8 +10,7 @@ use App\Models\PromoCodes as ModelsPromoCodes;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
-
+use App\Helpers\PolylineEncoder;
 class PromoCodes extends Controller
 {
     //
@@ -174,5 +173,139 @@ class PromoCodes extends Controller
             'status' => ['required', 'integer', Rule::in([1, 2])],
             'promo_code' => ['required', 'exists:promo_codes,promocode']
         ]);
+    }
+
+    public function getPromoCodevalidity(Request $request)
+    {
+        $input = $request->all();
+        $validated = $this->validatePromoCodeValidity($input);
+        if ($validated->passes()) {
+            //get venue for promo code
+            try {
+                $promo_code = ModelsPromoCodes::where('promocode', $input['promo_code'])
+                    ->firstOrFail();
+                $venue = Venue::findOrFail($promo_code->venue_id);
+            } catch (Exception $e) {
+                $error = [
+                    'status' => 'Error',
+                    'status_code' => 400,
+                    'message' => $e->getMessage()
+                ];
+                return response()->json($error, 400);
+            }
+            //check if code is valid
+            if ($promo_code->checkIfCodeIsValid() == false) {
+                $error = [
+                    'status' => 'Error',
+                    'status_code' => 400,
+                    'message' => 'Promocode not valid'
+                ];
+                return response()->json($error, 400);
+            }
+            if (
+                $input['origin']['latitude'] == $venue->latitude &&
+                $input['origin']['longitude'] == $venue->longitude ||
+                $input['destination']['latitude'] == $venue->latitude &&
+                $input['destination']['longitude'] == $venue->longitude
+            ) {
+                $data = [
+                    'lat1' => $input['origin']['latitude'],
+                    'lon1' => $input['origin']['longitude'],
+                    'lat2' => $input['destination']['latitude'],
+                    'lon2' => $input['destination']['longitude'],
+                ];
+                $dist = $this->getDistanceBetweenUserDestinationAndVenue($data);
+                if ($dist > $promo_code->acceptable_radius) {
+                    $error = [
+                        'status' => 'Error',
+                        'status_code' => 400,
+                        'message' => 'Route outside acceptable range'
+                    ];
+                    return response()->json($error, 400);
+                }
+
+                $points = [
+                    [
+                        $input['destination']['latitude'],
+                        $input['destination']['longitude'],
+                    ],
+                    [
+                        $input['origin']['latitude'],
+                        $input['origin']['longitude'],
+                    ]
+                    ];
+                $polyline_encorder = new PolylineEncoder();
+                $pp = $polyline_encorder->encode($points);
+                return response()->json([
+                    'promo_code' => $promo_code,
+                    'polyline' => $pp
+                ], 200);           
+            } else {
+                $error = [
+                    'status' => 'Error',
+                    'status_code' => 400,
+                    'message' => 'Route should either begin or end at venue'
+                ];
+                return response()->json($error, 400);
+            }
+        } else {
+            $error['status'] = 'Error';
+            $error['status_code'] = 400;
+            $error['message'] = 'The following fields are required.';
+            $error['errors'] = $validated->messages();
+            $response = $error;
+            return response()->json($response, 400);
+        }
+    }
+
+    protected function getDistanceBetweenUserDestinationAndVenue($data, $unit='k')
+    {
+        $lat1 = $data['lat1'];
+        $lat2 = $data['lat2'];
+        $lon1 = $data['lon1'];
+        $lon2 = $data['lon2'];
+        
+        if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+            return 0;
+          }
+          else {
+            $theta = $lon1 - $lon2;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+        
+            if ($unit == "K") {
+              return ($miles * 1.609344);
+            } else if ($unit == "N") {
+              return ($miles * 0.8684);
+            } else {
+              return $miles;
+            }
+          }
+    }
+
+    public function validatePromoCodeValidity($data)
+    {
+        $messages = [
+            'origin.latitude.required' => 'Please specify the latitude for the origin',
+            'origin.longitude.required' => 'Please specify the longitude for the origin',
+            'origin.latitude.required' => 'Please specify the latitude for the destination',
+            'origin.longitude.required' => 'Please specify the longitude for the destination',
+
+            'origin.latitude.numeric' => 'The latitude for the origin must be numeric',
+            'origin.longitude.numeric' => 'The longitude for the origin must be numeric',
+            'destination.latitude.numeric' => 'The latitude for the destination must be numeric',
+            'destination.longitude.numeric' => 'The longitude for the destination must be numeric',
+            'promo_code.exists' => "Promo code must exist in the database"
+        ];
+        return Validator::make($data, [
+            'promo_code' => ['required', 'exists:promo_codes,promocode'],
+            'origin.latitude' => ['required', 'numeric'],
+            'origin.longitude' => ['required', 'numeric'],
+            'destination.latitude' => ['required', 'numeric'],
+            'destination.longitude' => ['required', 'numeric'],
+        ], $messages);
     }
 }

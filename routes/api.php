@@ -23,8 +23,6 @@ Route::group(['middleware' => []],function() {
     Route::post('promocodes/deactivate', 'App\Http\Controllers\PromoCodes@deactivatePromoCode');
     Route::post('promocodes/activate', 'App\Http\Controllers\PromoCodes@deactivatePromoCode');
     Route::get('promocodes/promocodes', 'App\Http\Controllers\PromoCodes@getPromoCodes');
-
-
-
+    Route::post('promocodes/valid', 'App\Http\Controllers\PromoCodes@getPromoCodevalidity');
 }
 );
