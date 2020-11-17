@@ -26,6 +26,11 @@ class GetPromoCodesTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Method to add promo codes to the db
+     *
+     * @return void
+     */
     public function createPromos() {
         $venue = Venue::create([
             'name' => 'La Grand',
@@ -67,6 +72,11 @@ class GetPromoCodesTest extends TestCase
         ]);
     }
 
+    /**
+     * Test get active promo codes only
+     *
+     * @return void
+     */
     public function testGetActivePromoCodes() {
         $this->createPromos();
         $response = $this->json('GET', 'http://127.0.0.1:8000/api/promocodes/promocodes?q=Active');
@@ -74,7 +84,11 @@ class GetPromoCodesTest extends TestCase
         $response->assertSee($response['count'], 1);
     }
 
-
+    /**
+     * Test get all promo codes
+     *
+     * @return void
+     */
     public function testGetAllPromoCodes() {
         $this->createPromos();
         $response = $this->json('GET', 'http://127.0.0.1:8000/api/promocodes/promocodes');

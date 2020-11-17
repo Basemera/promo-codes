@@ -22,6 +22,11 @@ class PromoCodes extends Model
         'updated_at'
     ];
 
+    /**
+     * Check if code is valid
+     *
+     * @return boolean
+     */
     public function checkIfCodeIsValid() {
         if ($this->expiry_date != null &&
             $this->expiry_date >= Carbon::now() &&
@@ -32,6 +37,11 @@ class PromoCodes extends Model
             }
     }
 
+    /**
+     * Check if code is expired
+     *
+     * @return boolean
+     */
     public function checkIfCodeIsExpired() {
         if ($this->expiry_date &&
         $this->expiry_date >= Carbon::now()) {

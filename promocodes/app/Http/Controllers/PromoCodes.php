@@ -14,6 +14,12 @@ use App\Helpers\PolylineEncoder;
 class PromoCodes extends Controller
 {
     //
+    /**
+     * Create promo codes
+     *
+     * @param Request $request
+     * @return ModelsPromoCodes
+     */
     public function createPromoCodes(Request $request)
     {
         $input = $request->all();
@@ -70,6 +76,12 @@ class PromoCodes extends Controller
         }
     }
 
+    /**
+     * Validate create promo code input
+     *
+     * @param array $data
+     * @return Validator
+     */
     public function validatePromoCode($data)
     {
         return Validator::make($data, [
@@ -80,6 +92,12 @@ class PromoCodes extends Controller
         ]);
     }
 
+    /**
+     * Deactivate promo codes
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function deactivatePromoCode(Request $request)
     {
         $input = $request->all();
@@ -132,6 +150,12 @@ class PromoCodes extends Controller
         }
     }
 
+    /**
+     * Get promo codes
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function getPromoCodes(Request $request)
     {
         $input = $request->all();
@@ -154,6 +178,12 @@ class PromoCodes extends Controller
         return response()->json($response, 200);
     }
 
+    /**
+     * Get active promo codes
+     *
+     * @param boolean $active
+     * @return void
+     */
     protected function getActivePromoCodes($active = false)
     {
         if ($active == true) {
@@ -167,6 +197,12 @@ class PromoCodes extends Controller
         }
     }
 
+    /**
+     * Validate deactivate promo code input
+     *
+     * @param array $data
+     * @return Validator
+     */
     public function validateDeactivatePromoCode($data)
     {
         return Validator::make($data, [
@@ -175,6 +211,12 @@ class PromoCodes extends Controller
         ]);
     }
 
+    /**
+     * Get promo code validity
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function getPromoCodevalidity(Request $request)
     {
         $input = $request->all();
@@ -258,6 +300,13 @@ class PromoCodes extends Controller
         }
     }
 
+    /**
+     * Get distance between destination and origin
+     *
+     * @param array $data
+     * @param string $unit
+     * @return integer $miles
+     */
     protected function getDistanceBetweenUserDestinationAndVenue($data, $unit='k')
     {
         $lat1 = $data['lat1'];
@@ -286,6 +335,12 @@ class PromoCodes extends Controller
           }
     }
 
+    /**
+     * Validate promo code validity input
+     *
+     * @param array $data
+     * @return Validator
+     */
     public function validatePromoCodeValidity($data)
     {
         $messages = [

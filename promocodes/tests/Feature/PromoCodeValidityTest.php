@@ -26,7 +26,11 @@ class PromoCodeValidityTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    /**
+     * Test to validate promo code validity input
+     *
+     * @return void
+     */
     public function testMissingFieldsInBody()
     {
         $data = [];
@@ -54,7 +58,11 @@ class PromoCodeValidityTest extends TestCase
         ]);
     }
 
-
+    /**
+     * Test to validate failure when wrong format of input is passed in request
+     *
+     * @return void
+     */
     public function testWrongInputTypeInBody()
     {
         $data = [
@@ -92,6 +100,11 @@ class PromoCodeValidityTest extends TestCase
         ]);
     }
 
+    /**
+     * Test error is returned when promo code is invalid
+     *
+     * @return void
+     */
     public function testFailWhenPromoCodeInvalid()
     {
         $this->createPromos();
@@ -115,6 +128,11 @@ class PromoCodeValidityTest extends TestCase
         ]);
     }
 
+    /**
+     * Test error is returned when the user journey doesnot include the venue
+     *
+     * @return void
+     */
     public function testFailWhenVenueNotPartOfJourney() {
         $this->createPromos();
         $data = [
@@ -138,6 +156,11 @@ class PromoCodeValidityTest extends TestCase
     }
 
 
+    /**
+     * Test an error is returned when the user route is outside the acceptable range
+     *
+     * @return void
+     */
     public function testFailWhenRouteOutsideAcceptableRange() {
         $this->createPromos();
         $data = [
@@ -160,7 +183,11 @@ class PromoCodeValidityTest extends TestCase
         ]);
     }
 
-
+    /**
+     * Test promo code details returned for a valid promo code
+     *
+     * @return void
+     */
     public function testReturnDetailsValidPromoCode() {
         $this->createPromos();
         $data = [
@@ -198,6 +225,11 @@ class PromoCodeValidityTest extends TestCase
         ]);
     }
 
+    /**
+     * Method to add promo codes to the db
+     *
+     * @return void
+     */
     public function createPromos()
     {
         $venue = Venue::create([
