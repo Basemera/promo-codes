@@ -25,6 +25,11 @@ class PromoCodesActivationTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test error is returned when fields are missing in request body
+     *
+     * @return void
+     */
     public function testMissingFieldsInBodyForActivation()
     {
         $data = [];
@@ -45,6 +50,12 @@ class PromoCodesActivationTest extends TestCase
         ]);
     }
 
+    
+    /**
+     * Test error is returned when inputs are of the wrong type
+     *
+     * @return void
+     */
     public function testWrongInputTypeForActivation()
     {
         $data = [
@@ -68,6 +79,12 @@ class PromoCodesActivationTest extends TestCase
         ]);
     }
 
+    
+    /**
+     * Test successfully activate a promo code
+     *
+     * @return void
+     */
     public function testActivatePromoCode() {
         //create venue
         $venue = Venue::create([
@@ -104,6 +121,11 @@ class PromoCodesActivationTest extends TestCase
         ]);
     }
 
+    /**
+     * Test successfully activate a promo code
+     *
+     * @return void
+     */
     public function testActivateSuccessfulWhenPromoCodeAlreadyActivated() {
         //create venue
         $venue = Venue::create([
@@ -140,6 +162,11 @@ class PromoCodesActivationTest extends TestCase
         ]);
     }
 
+    /**
+     * Test error is returned when promo code to be activated has expired
+     *
+     * @return void
+     */
     public function testActivateFailsWhenPromoCodeExpired() {
         //create venue
         $venue = Venue::create([
