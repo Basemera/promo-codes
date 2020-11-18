@@ -10,7 +10,7 @@ class PromoCodes extends Model
 {
     use HasFactory;
     const ACTIVE = 1;
-    const DEACTIVATED = 2;
+    const DEACTIVATED = 0;
     protected $fillable = [
         'promocode',
         'no_rides',
