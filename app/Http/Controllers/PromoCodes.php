@@ -49,7 +49,7 @@ class PromoCodes extends Controller
                         'promocode' => $promo_code,
                         'no_rides' => isset($input['no_of_rides']) ? $input['no_of_rides'] : null,
                         'expiry_date' => isset($input['expiry']) ? Carbon::parse($input['expiry']) : null,
-                        'status' => isset($input['status']) ? $input['status'] : 1,
+                        'status' => isset($input['status']) ? $input['status'] : true,
                         'venue_id' => $venue->id,
                         'acceptable_radius' => isset($input['accepted_radius']) ? $input['accepted_radius'] : null,
                     ]
@@ -124,7 +124,7 @@ class PromoCodes extends Controller
                     $error['message'] = 'Promo code already expired';
                     return response()->json($error, 400);
                 }
-                $promo_code->status = $input['status'];
+                $promo_code->status = true;
                 $promo_code->save();
                 $promo_code->refresh();
                 return response()->json($promo_code, 200);
@@ -135,7 +135,7 @@ class PromoCodes extends Controller
                     $error['message'] = 'Promo code already deactivated';
                     return response()->json($error, 400);
                 }
-                $promo_code->status = $input['status'];
+                $promo_code->status = false;
                 $promo_code->save();
                 $promo_code->refresh();
                 return response()->json($promo_code, 200);
