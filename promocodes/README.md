@@ -69,20 +69,21 @@ https://desolate-inlet-22664.herokuapp.com
 
 # Screenshots
 ## Generate promo codes
-![Alt text](images/generate_code.png?raw=true "Generate Promo code")
+![Alt text](app/images/generate_code.png?raw=true "Generate Promo code")
 
 ## Get Active promo codes
-![Alt text](images/get_active_codes.png?raw=true "Get active Promo code")
+![Alt text](app/images/get_active_codes.png?raw=true "Get active Promo code")
 
 ## Get all promo codes
-![Alt text](images/get_all_codes.png?raw=true "Get all Promo code")
+![Alt text](app/images/get_all_codes.png?raw=true "Get all Promo code")
 
 ## Activate promo code
-![Alt text](images/activate_code.png?raw=true "Activate Promo code")
+![Alt text](app/images/activate_code.png?raw=true "Activate Promo code")
 
 ## Deactivate promo code
-![Alt text](images/deactivate_code1.png?raw=true "Deactivate Promo code")
+![Alt text](app/images/deactivate_code1.png?raw=true "Deactivate Promo code")
 
 ## Validate promo code
-![Alt text](images/validate_code.png?raw=true "Validate Promo code")
+![Alt text](app/images/validate_code.png?raw=true "Validate Promo code")
+
 
