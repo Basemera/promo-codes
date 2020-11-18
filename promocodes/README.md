@@ -51,6 +51,11 @@ Run tests.
 php artisan test
 ```
 
+Access Online
+```
+https://desolate-inlet-22664.herokuapp.com
+```
+
 # Endpoints
 
 | Method | Endpoint                                              | Description                  | Access          |
